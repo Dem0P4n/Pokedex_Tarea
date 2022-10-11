@@ -1,0 +1,48 @@
+<ion-content>
+
+
+  <ng-template #cargando>
+    <ion-progress-bar  type="indeterminate"></ion-progress-bar>
+  </ng-template>
+
+
+  <ng-template #losDatos>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ paginaPokemon.resultado.name | titlecase }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+  <img [src]="paginaPokemon.resultado.sprites.front_default"/>
+  <img [src]="paginaPokemon.resultado.sprites.front_female"/>
+  <img [src]="paginaPokemon.resultado.sprites.front_shiny"/>
+  <img [src]="paginaPokemon.resultado.sprites.front_shiny_female"/>
+  <br>
+  <ion-label>
+    Nombre Pokemon: {{ paginaPokemon.resultado.name | titlecase }} <br>
+    N° de orden: {{ paginaPokemon.resultado.order }}
+  </ion-label>
+
+  <ion-list>
+    <p>Stats</p>
+    <ion-item *ngFor="let stat of paginaPokemon.resultado.stats">
+      {{stat.stat.name}} -> {{stat.base_stat}}
+    </ion-item>
+  </ion-list>
+  <ion-list>
+    <p>Moves</p>
+    <ion-item *ngFor="let moves of paginaPokemon.resultado.moves">
+      {{moves.move.name}}
+    </ion-item>
+  </ion-list>
+  <ion-list>
+    <p>Abilities</p>
+    <ion-item *ngFor="let abilities of paginaPokemon.resultado.abilities">
+      {{abilities.ability.name}} -> {{abilities.is_hidden}} {{ abilities.slot}}
+    </ion-item>
+  </ion-list>
+  </ng-template>
+
+  <p *ngIf="paginaPokemon.resultado then losDatos else cargando"></p>
+
+</ion-content>

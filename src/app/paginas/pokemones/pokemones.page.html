@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Pokemones</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-template #cargando>
+    <ion-progress-bar  type="indeterminate"></ion-progress-bar>
+  </ng-template>
+  <ng-template #losDatos>
+    <form [formGroup]="formulario" novalidate>
+    <ion-searchbar formControlName="nombrePokemon"
+     clear-icon="logo-discord"
+      show-clear-button="focus"
+      placeholder="Buscar Pokemon" animated="false"
+      [color]="formulario.get('nombrePokemon').invalid && formulario.get('nombrePokemon').touched? 'danger':'light'"></ion-searchbar>
+
+
+    <ion-label *ngIf="!formulario.get('nombrePokemon').valid &&
+    formulario.get('nombrePokemon').errors.required &&
+    formulario.get('nombrePokemon').touched" color="danger">
+      Este campo es requerido
+    </ion-label>
+    <ion-label *ngIf="!formulario.get('nombrePokemon').valid &&
+    formulario.get('nombrePokemon').errors.minlength &&
+    formulario.get('nombrePokemon').touched" color="danger">
+      Pon 3 letras
+    </ion-label>
+    <ion-label *ngIf="!formulario.get('nombrePokemon').valid &&
+    formulario.get('nombrePokemon').errors.maxlength &&
+    formulario.get('nombrePokemon').touched" color="danger">
+      Menos letras
+    </ion-label>
+
+<!--
+    {{ formulario.get('nombrePokemon').valid }} <br>
+    {{ formulario.get('nombrePokemon').value }} <br>
+    {{ formulario.get('nombrePokemon').errors | json }} <br>
+    {{ formulario.get('nombrePokemon').touched }} <br>
+    {{ formulario.get('nombrePokemon').dirty }} <br>
+    -->
+  </form>
+
+    <app-info-pokemon
+      *ngFor="let info of obtenerPokemon.informaciones"
+      [url]="info.url"
+    ></app-info-pokemon>
+    <ion-infinite-scroll (ionInfinite)="cargarMasPokemones($event)">
+      <ion-infinite-scroll-content [loadingSpinner]="'circular'" [loadingText]="'Cargando :)'">
+
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </ng-template>
+  <p *ngIf="obtenerPokemon.informaciones; then losDatos else cargando"></p>
+  <!-- Template Reference -->
+
+</ion-content>
